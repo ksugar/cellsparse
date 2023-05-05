@@ -35,4 +35,6 @@ COPY elephant-server/elephant-core /tmp/elephant-core
 RUN python3 -m pip install zarr pika redis
 RUN python3 -m pip install /tmp/elephant-core && rm -r /tmp/elephant-core
 
-CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/notebook --ip 0.0.0.0 --no-browser --allow-root"]
+RUN python3 -m pip install dill
+
+CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/src --ip 0.0.0.0 --no-browser --allow-root"]
