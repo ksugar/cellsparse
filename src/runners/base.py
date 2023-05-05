@@ -33,12 +33,13 @@ class BaseRunner(ABC):
         kths=(1, 4, 16, 64, 256),
         mode="minmax",
         is_train=True,
+        is_eval=True,
         include_bg=False,
     ):
         stats_list = []
         for i, kth in enumerate(kths + ("full",)):
             suffix = f"{kth:03d}" if isinstance(kth, int) else kth
-            description = f'{self.name()}_{mode}_{suffix}{"_bg" if include_bg else ""}'
+            description = f'{mode}_{suffix}{"_bg" if include_bg else ""}'
             if is_train:
                 y_trn_s = (
                     to_sparse(x_trn, y_trn, kth, include_bg=include_bg, mode=mode)
@@ -46,11 +47,12 @@ class BaseRunner(ABC):
                     else y_trn
                 )
                 self._train(x_trn, y_trn_s, x_val, y_val, description)
-            y_val_pred = self._eval(x_val, description)
-            if i == 0:
-                plot_img_label(x_val[0], y_val[0], lbl_title="GT")
-            plot_img_label(x_val[0], y_val_pred[0], lbl_title=f"Pred {description}")
-            stats_list.append(
-                matching_dataset(y_val, y_val_pred, thresh=0.5, show_progress=False)
-            )
-        return stats_list
+            if is_eval:
+                y_val_pred = self._eval(x_val, description)
+                if i == 0:
+                    plot_img_label(x_val[0], y_val[0], lbl_title="GT")
+                plot_img_label(x_val[0], y_val_pred[0], lbl_title=f"Pred {self.name()} {description}")
+                stats_list.append(
+                    matching_dataset(y_val, y_val_pred, thresh=0.5, show_progress=False)
+                )
+        return stats_list if is_eval else None

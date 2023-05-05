@@ -81,7 +81,7 @@ class StarDistRunner(BaseRunner):
         return x, y
 
     def _train(self, x_trn, y_trn, x_val, y_val, description):
-        model = StarDist2D(self.config, name=description[len(self.name()) + 1:], basedir=self.basedir)
+        model = StarDist2D(self.config, name=description, basedir=self.basedir)
         model.train(
             x_trn,
             y_trn,
@@ -92,7 +92,7 @@ class StarDistRunner(BaseRunner):
     def _eval(self, x_val, description):
         tf.keras.utils.disable_interactive_logging()
         try:
-            model = StarDist2D(self.config, name=description[len(self.name()) + 1:], basedir=self.basedir)
+            model = StarDist2D(self.config, name=description, basedir=self.basedir)
             model.load_weights(self.config.train_checkpoint_last)
             labels = [
                 model.predict_instances(

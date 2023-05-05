@@ -29,18 +29,17 @@ def main():
         train_batch_size=train_batch_size,
         train_steps_per_epoch=len(x_trn) // train_batch_size + 1,
     )
-    stats_list_dict = {}
     for runner in (cellpose_runner, elephant_runner, stardist_runner):
         for include_bg in (False, True):
             for mode in ("min", "max", "minmax"):
-                key = f'{elephant_runner.name()}_{mode}{"_bg" if include_bg else ""}'
-                stats_list_dict[key] = runner.run(
+                runner.run(
                     x_trn,
                     y_trn,
                     x_val,
                     y_val,
                     mode=mode,
                     is_train=True,
+                    is_eval=False,
                     include_bg=include_bg,
                 )
 

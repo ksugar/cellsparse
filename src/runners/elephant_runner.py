@@ -191,7 +191,7 @@ class ElephantRunner(BaseRunner):
     def _train(self, x_trn, y_trn, x_val, y_val, description):
         is_3d = self.is_3d and x_trn[0].ndim == 3
         Path(self.model_dir).mkdir(exist_ok=True, parents=True)
-        filename_stem =  f"{self.backbone}_{description[len(self.name())+1:]}"
+        filename_stem =  f"{self.backbone}_{description}"
         model_path = str(Path(self.model_dir) / f"{filename_stem}.pth")
         if self.log_path is None:
             log_path = str(Path(self.log_dir) / filename_stem)
@@ -282,7 +282,7 @@ class ElephantRunner(BaseRunner):
         logging.getLogger().disabled = True
         is_3d = self.is_3d and x_val[0].ndim == 3
         try:
-            filename_stem =  f"{self.backbone}_{description[len(self.name())+1:]}"
+            filename_stem =  f"{self.backbone}_{description}"
             model_path = str(
                 Path(self.model_dir) / f"{filename_stem}.pth"
             )

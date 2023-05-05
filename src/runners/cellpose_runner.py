@@ -52,12 +52,12 @@ class CellposeRunner(BaseRunner):
             learning_rate=self.learning_rate,
             weight_decay=self.weight_decay,
             nimg_per_epoch=self.nimg_per_epoch,
-            model_name=description[len(self.name()) + 1:],
+            model_name=description,
             min_train_masks=1,
         )
 
     def _eval(self, x_val, description):
-        model_path = os.path.join(self.save_path, "models", description[len(self.name()) + 1:])
+        model_path = os.path.join(self.save_path, "models", description)
         model = models.CellposeModel(gpu=self.use_GPU, pretrained_model=model_path)
         diam_labels = model.diam_labels.copy()
         labels = [
