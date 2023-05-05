@@ -47,9 +47,9 @@ def _get_min_max_label(lbl, img, kth):
     keep = np.nonzero(props["minor_axis_length"])
     props["label"] = props["label"][keep]
     props["mean_intensity"] = props["mean_intensity"][keep]
-    kth = min(kth, len(props["label"]) - 1)
-    min_label = props["label"][np.argpartition(props["mean_intensity"], kth)[:kth]]
-    max_label = props["label"][np.argpartition(props["mean_intensity"], -kth)[-kth:]]
+    kth_v = min(kth, len(props["label"]) - 1)
+    min_label = props["label"][np.argpartition(props["mean_intensity"], kth_v)[:kth]]
+    max_label = props["label"][np.argpartition(props["mean_intensity"], -kth_v)[-kth:]]
     return min_label, max_label
 
 
