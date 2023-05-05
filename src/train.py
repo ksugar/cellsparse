@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import argparse
+
 from runners import (
     CellposeRunner,
     ElephantRunner,
@@ -7,22 +9,22 @@ from runners import (
 from utils import get_data
 
 
-def main():
+def main(name: str) -> None:
     (x_trn, y_trn), (x_val, y_val) = get_data()
     cellpose_runner = CellposeRunner(
-        save_path="/src/models/cellpose/paper01",
+        save_path=f"/src/models/cellpose/{name}",
         n_epochs=100,
     )
     elephant_runner = ElephantRunner(
         is_3d=False,
-        model_dir="/src/models/elephant/paper01",
-        log_dir="/src/models/elephant/paper01/logs",
+        model_dir=f"/src/models/elephant/{name}",
+        log_dir=f"/src/models/elephant/{name}/logs",
         n_epochs=100,
     )
     train_batch_size = 8
     stardist_runner = StarDistRunner(
         grid=(2, 2),
-        basedir="/src/models/stardist/paper01",
+        basedir=f"/src/models/stardist/{name}",
         use_gpu=False,
         train_epochs=100,
         train_patch_size=(224, 224),
@@ -45,4 +47,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(prog="Cellsparse training")
+    parser.add_argument(
+        "name",
+        type=str,
+        help="model directory name, e.g. paper01",
+    )
+    args = parser.parse_args()
+    main(args.name)
