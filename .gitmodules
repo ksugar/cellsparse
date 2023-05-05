@@ -1,0 +1,12 @@
+[submodule "elephant-server"]
+	path = elephant-server
+	url = git@github.com:elephant-track/elephant-server.git
+	branch = dev
+[submodule "cellpose-sparse"]
+	path = cellpose-sparse
+	url = git@github.com:ksugar/cellpose-sparse.git
+	branch = sparse
+[submodule "stardist-sparse"]
+	path = stardist-sparse
+	url = git@github.com:ksugar/stardist-sparse.git
+	branch = sparse
