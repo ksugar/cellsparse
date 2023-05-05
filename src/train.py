@@ -10,19 +10,19 @@ from utils import get_data
 def main():
     (x_trn, y_trn), (x_val, y_val) = get_data()
     cellpose_runner = CellposeRunner(
-        save_path="cellpose_paper01",
+        save_path="models/cellpose/paper01",
         n_epochs=100,
     )
     elephant_runner = ElephantRunner(
         is_3d=False,
-        model_dir="./elephant_workspace/models/elephant_paper01",
-        log_dir="./elephant_workspace/logs/elephant_paper01",
+        model_dir="models/elephant/paper01",
+        log_dir="models/elephant/paper01/logs",
         n_epochs=100,
     )
     train_batch_size = 8
     stardist_runner = StarDistRunner(
         grid=(2, 2),
-        basedir="stardist_paper01",
+        basedir="models/stardist/paper01",
         use_gpu=False,
         train_epochs=100,
         train_patch_size=(224, 224),
