@@ -35,6 +35,8 @@ class BaseRunner(ABC):
         is_train=True,
         is_eval=True,
         include_bg=False,
+        show_plot=True,
+        sample_ind=0,
     ):
         stats_list = []
         for i, kth in enumerate(kths + ("full",)):
@@ -49,9 +51,18 @@ class BaseRunner(ABC):
                 self._train(x_trn, y_trn_s, x_val, y_val, description)
             if is_eval:
                 y_val_pred = self._eval(x_val, description)
-                if i == 0:
-                    plot_img_label(x_val[0], y_val[0], lbl_title="GT")
-                plot_img_label(x_val[0], y_val_pred[0], lbl_title=f"Pred {self.name()} {description}")
+                if show_plot:
+                    if i == 0:
+                        plot_img_label(
+                            x_val[sample_ind],
+                            y_val[sample_ind],
+                            lbl_title="GT",
+                        )
+                    plot_img_label(
+                        x_val[sample_ind],
+                        y_val_pred[sample_ind],
+                        lbl_title=f"Pred {self.name()} {description}",
+                    )
                 stats_list.append(
                     matching_dataset(y_val, y_val_pred, thresh=0.5, show_progress=False)
                 )

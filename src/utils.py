@@ -92,7 +92,7 @@ def to_sparse(X, Y, kth, include_bg=True, mode="minmax"):
 def plot_stats(
     stats_list,
     title,
-    data_points=(1, 4, 16, 64, 256, 1000),
+    data_points=(1, 4, 16, 64, 256),
     xlabel="kth",
     ax2_ylim=[0, 3000],
     metrics=(
@@ -105,25 +105,51 @@ def plot_stats(
         "panoptic_quality",
     )
 ):
-    if len(stats_list) != len(data_points):
+    if len(stats_list) - 1 != len(data_points):
         raise ValueError(
-            f"len(stats_list)={len(stats_list)} and len(data_points)={len(data_points)}"
+            f"len(stats_list)={len(stats_list)} - 1 and len(data_points)={len(data_points)}"
             + " should be the same"
         )
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
 
     for m in metrics:
-        ax1.plot(data_points, [s._asdict()[m] for s in stats_list], ".-", lw=2, label=m)
+        p = ax1.plot(
+            data_points,
+            [s._asdict()[m] for s in stats_list[:-1]],
+            "o-",
+            lw=2,
+            label=m,
+        )
+        ax1.plot(
+            (data_points[0], data_points[-1]),
+            (stats_list[-1]._asdict()[m],) * 2,
+            "--",
+            color=p[0].get_color(),
+            lw=1,
+        )
     ax1.set_title(title)
     ax1.set_xlabel(xlabel)
     ax1.set_ylabel("Metric value")
     ax1.set_ylim([0, 1])
     ax1.grid()
-    ax1.legend()
+    ax1.legend(loc=5)
 
     for m in ("fp", "tp", "fn"):
-        ax2.plot(data_points, [s._asdict()[m] for s in stats_list], ".-", lw=2, label=m)
+        p = ax2.plot(
+            data_points,
+            [s._asdict()[m] for s in stats_list[:-1]],
+            "o-",
+            lw=2,
+            label=m,
+        )
+        ax2.plot(
+            (data_points[0], data_points[-1]),
+            (stats_list[-1]._asdict()[m],) * 2,
+            "--",
+            color=p[0].get_color(),
+            lw=1,
+        )
     ax2.set_title(title)
     ax2.set_xlabel(xlabel)
     ax2.set_ylabel("Number #")
