@@ -101,6 +101,7 @@ class StarDistRunner(BaseRunner):
                     show_tile_progress=False,
                     prob_thresh=self.prob_thresh,
                     nms_thresh=self.nms_thresh,
+                    predict_kwargs={"verbose": 0},
                 )[0]
                 for x in tqdm(x_val)
             ]
